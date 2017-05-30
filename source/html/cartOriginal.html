@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Cart</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+        <div id="page-wrapper">
+
+
+                <div class="row">
+                    <div class="col-lg-8">
+                    <h2>Products</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width=120>Pic</th>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>x</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyid">
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <h2>Total</h2>
+                        <div position="right" class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title" id="total"></h3>
+                            </div>
+                        </div>
+                            <button type="button" class="btn btn-success">Place Order</button>
+                    </div>
+                </div>
+
+                <!-- /.row -->
+            </div>
+
+        <!-- /#page-wrapper -->
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+                var token = null;
+               var loc = document.location.href;
+               var getString = loc.split('?')[1];
+               var GET = getString.split('&');
+               var get = {};
+
+               for(var i = 0, l = GET.length; i < l; i++){
+                  var tmp = GET[i].split('p_=');
+                  get[tmp[0]] = unescape(decodeURI(tmp[1]));
+               }
+               token = get['token'];
+               token = token.replace(/#/g, '');
+                if(token.length > 0){
+                $.ajax({
+                    type:'POST',
+                    url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/viewcart',
+                    data: JSON.stringify({"cookie": token,"flag" : true}),
+                    contentType: "application/json",
+                    success: function(data){
+                            if(data.errorMessage == "Token has expired"){
+                                alert("Your token has expired, please login again.");
+                            }else if(data.errorMessage == "Bad parameter, token malformed."){
+                                alert("Bad parameter, token malformed.");
+                            }else if(data.errorMessage == "Bad parameter, flag is incorrect."){
+                                alert("Bad parameter, flag is incorrect.");
+                            }else{
+                            data.Items.forEach(function(articleItem){
+                            $.ajax({
+                                type:'POST',
+                                url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/view',
+                                data: JSON.stringify({"id": articleItem.prod_id}),
+                                contentType: "application/json",
+                                success: function(data){
+                                    var valew2 = JSON.parse(JSON.stringify(data));
+                                    $('#tbodyid').append('<tr class="success">'+'<td>'+'<img width=100 height=100 src="'+valew2.Item["img"]+'">'+'</td>' +'<td>'+ valew2.Item["title"] + '</td>' + '<td>' + valew2.Item["price"] + '</td>' + '<a href="#">'+' <td>' + 'Delete' + '</td>' + '</a>' + '</tr>');
+                                    // total = total + parseInt(valew2.Item["price"]);
+                                    // $('#total').empty();
+                                    // $('#total').append(total);
+                                }
+                             }); 
+                            })
+                        }
+                    }
+                }); 
+            }else{
+                $.ajax({
+                    type:'POST',
+                    url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/viewcart',
+                    data: JSON.stringify({"cookie": document.cookie,"flag" : false}),
+                    contentType: "application/json",
+                    success: function(data){
+                        // alert(JSON.stringify(data));
+                        // var valew = JSON.parse(JSON.stringify(data));
+                        data.Items.forEach(function(articleItem){
+                            $.ajax({
+                                type:'POST',
+                                url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/view',
+                                data: JSON.stringify({"id": articleItem.prod_id}),
+                                contentType: "application/json",
+                                success: function(data){
+                                    var valew2 = JSON.parse(JSON.stringify(data));
+                                    $('#tbodyid').append('<tr class="success">'+'<td>'+'<img width=100 height=100 src="'+valew2.Item["img"]+'">'+'</td>' +'<td>'+ valew2.Item["title"] + '</td>' + '<td>' + valew2.Item["price"] + '</td>' + '<a href="#">'+' <td>' + 'Delete' + '</td>' + '</a>' + '</tr>');
+                                    // total = total + parseInt(valew2.Item["price"]);
+                                    // $('#total').empty();
+                                    // $('#total').append(total);
+                                }
+                             }); 
+                        })
+                    }
+                }); 
+            }
+
+        }); 
+    </script>
+    
+</body>
+
+</html>

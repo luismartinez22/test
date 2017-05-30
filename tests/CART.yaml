@@ -1,0 +1,327 @@
+---
+execution:
+  scenario: blazemeter-recording
+  concurrency: 5
+  ramp-up: 1m
+  iterations: 5
+scenarios:
+  blazemeter-recording:
+    headers:
+      User-Agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3082.0 Safari/537.36'
+      Accept-Encoding: 'gzip, deflate, br'
+      Accept-Language: 'es-ES,es;q=0.8'
+    keepalive: true
+    think-time: 1s
+    retrieve-resources: false
+    force-parent-sample: false
+    content-encoding: utf-8
+    variables: 
+      server: 'https://s3-us-west-1.amazonaws.com'
+      api: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com'
+    default-address: https://s3-us-west-1.amazonaws.com
+    requests:
+      - transaction: Main Page
+        do:
+          - url: /demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html
+            assert:
+              - contains:
+                - <title>STORE</title>
+                subject: body  
+                regexp: true  
+                not: false  
+                assume-success: false 
+            method: GET
+            label: ${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html
+            headers:
+              Upgrade-Insecure-Requests: '1'
+              Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'    
+          - url: ${api}/prod/entries
+            assert:
+              - contains:
+                - "Items"
+                subject: body  
+                regexp: true  
+                not: false  
+                assume-success: false 
+            method: GET
+            label: '${api}/prod/entries'
+            headers:
+              Accept: '*/*'
+              Origin: '${server}'
+              Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+      - transaction: Choose Phones Category
+        do: 
+        - url: ${api}/prod/bycat
+          assert:
+            - contains:
+              - "Items"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/bycat'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+          body: '{"cat": "phone"}'
+      - transaction: Choose phone
+        do: 
+        - url: /demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html
+          assert:
+            - contains:
+              - <title>product full detail</title>
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: GET
+          label: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html'
+          headers:
+            Upgrade-Insecure-Requests: '1'
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+          body:
+            id: '7'
+        - url: ${api}/prod/view
+          method: OPTIONS
+          label: '${api}/prod/view'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=7'
+        - url: ${api}/prod/view
+          assert:
+            - contains:
+              - "Item"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/view'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=7'
+          body: '{"id":"7"}'
+      - transaction: Add to cart
+        do: 
+        - url: ${api}/prod/adtocart
+          method: OPTIONS
+          label: '${api}/prod/adtocart'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=7'
+        - url: ${api}/prod/adtocart
+          assert:
+            - contains:
+              - "{}"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          jsr223: 
+          - language: groovy
+            script-file: C:\Users\Usuario\Desktop\Abstracta\Blazemeter\UltimateDemoEnviorment\guid.groovy
+            execute: before
+          - language: groovy
+            script-file: C:\Users\Usuario\Desktop\Abstracta\Blazemeter\UltimateDemoEnviorment\eventid.groovy
+            execute: before
+          method: POST
+          label: '${api}/prod/adtocart'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=7'
+          body: '{"id":"${eventId}","cookie":"user=${guid}","prod_id":7,"flag":false}'
+      - transaction: Choose Laptops Category
+        do: 
+        - url: ${api}/prod/bycat
+          assert:
+            - contains:
+              - "Items"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/bycat'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+          body: '{"cat": "notebook"}'
+      - transaction: Choose Laptops 
+        do: 
+        - url: /demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html
+          assert:
+            - contains:
+              - <title>product full detail</title>
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: GET
+          label: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html'
+          headers:
+            Upgrade-Insecure-Requests: '1'
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+          body:
+            id: '8'
+        - url: ${api}/prod/view
+          method: OPTIONS
+          label: '${api}/prod/view'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=8'
+        - url: ${api}/prod/view
+          assert:
+            - contains:
+              - "Item"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/view'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=8'
+          body: '{"id":"8"}'
+      - transaction: Add to cart
+        do: 
+        - url: ${api}/prod/adtocart
+          method: OPTIONS
+          label: '${api}/prod/adtocart'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=8'
+        - url: ${api}/prod/adtocart
+          assert:
+            - contains:
+              - "{}"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          jsr223: 
+          - language: groovy
+            script-file: C:\Users\Usuario\Desktop\Abstracta\Blazemeter\UltimateDemoEnviorment\eventid.groovy
+            execute: before
+          method: POST
+          label: '${api}/prod/adtocart'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/prod.html?id=8'
+          body: '{"id":"${eventId}","cookie":"user=${guid}","prod_id":8,"flag":false}'
+      - transaction: View cart
+        do: 
+        - url: /demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html
+          assert:
+            - contains:
+              - <title>Cart</title>
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: GET
+          label: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+          headers:
+            Upgrade-Insecure-Requests: '1'
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html'
+        - url: ${api}/prod/viewcart
+          method: OPTIONS
+          label: '${api}/prod/viewcart'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+        - url: ${api}/prod/viewcart
+          assert:
+            - contains:
+              - "Items"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/viewcart'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+          body: '{"cookie":"user=${guid}","flag":false}'
+        - url: ${api}/prod/view
+          method: OPTIONS
+          label: '${api}/prod/view'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+        - url: ${api}/prod/view
+          method: OPTIONS
+          label: '${api}/prod/view'
+          headers:
+            Access-Control-Request-Method: POST
+            Origin: '${server}'
+            Access-Control-Request-Headers: content-type
+            Accept: '*/*'
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+        - url: ${api}/prod/view
+          assert:
+            - contains:
+              - "Item"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/view'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+          body: '{"id":7}'
+        - url: ${api}/prod/view
+          assert:
+            - contains:
+              - "Item"
+              subject: body  
+              regexp: true  
+              not: false  
+              assume-success: false 
+          method: POST
+          label: '${api}/prod/view'
+          headers:
+            Accept: '*/*'
+            Origin: '${server}'
+            Content-Type: application/json
+            Referer: '${server}/demo.ecommerce-test/S3_Staggin_deploy/source/html/cart.html'
+          body: '{"id":8}'

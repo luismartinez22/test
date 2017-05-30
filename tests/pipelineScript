@@ -1,0 +1,7 @@
+#!groovy
+node {
+    stage('Run Jmeter Test') {
+    
+    sh '/usr/local/bin/bzt /var/lib/jenkins/workspace/S3_deploy/tests/demo.yml'
+    }
+    }

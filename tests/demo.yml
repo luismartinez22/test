@@ -1,0 +1,24 @@
+settings:
+  artifacts-dir: TaurusResult
+execution:
+  concurrency: 2
+  hold-for: 1m
+  ramp-up: 30s
+  scenario: quick-test
+
+scenarios:
+  quick-test:
+    requests:
+    - url: https://s3-us-west-1.amazonaws.com/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html # url
+    method: GET  # request method (GET, POST, PUT, DELETE)
+    label: homepage   #sampler  label
+
+
+reporting:
+   - module: final-stats
+     dump-xml: stat.xml
+   - module: passfail
+     criteria: 
+     - avg-rt>2000ms for 16s, stop as failed
+   
+ 
