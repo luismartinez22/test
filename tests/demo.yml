@@ -9,7 +9,7 @@ execution:
 scenarios:
   quick-test:
     requests:
-    - url: https://s3-us-west-1.amazonaws.com/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html # url
+    - url: https://s3q-us-west-1.amazonaws.com/demo.ecommerce-test/S3_Staggin_deploy/source/html/index.html # url
     method: GET  # request method (GET, POST, PUT, DELETE)
     label: homepage   #sampler  label
 
