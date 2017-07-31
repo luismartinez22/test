@@ -1,0 +1,25 @@
+settings:
+  artifacts-dir: TaurusResult
+execution:
+  concurrency: 2
+  hold-for: 1m
+  ramp-up: 30s
+  scenario: POST_/viewProd
+
+scenarios:
+  POST_/viewProd:
+    think-time: 1s
+    requests:
+    - url: "https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/view"
+      headers:
+        Content-Type: 'application/json'
+      method: POST
+      label: "ViewProd"
+      body: '{"id":7}'
+
+reporting:
+   - module: final-stats
+     dump-xml: stat.xml
+   - module: passfail
+     criteria: 
+     - avg-rt>1000ms for 20s, stop as failed
