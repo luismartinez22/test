@@ -883,6 +883,7 @@ a:focus{
       document.getElementById("message-text").value = "";
       alert('Thanks for the message!!');
       $('#exampleModal').modal('hide');
+      location.reload();
     }
         
     $(document).ready(function(window, videojs){
@@ -953,7 +954,7 @@ a:focus{
                 }else{                  
                   $('#signInModal').modal('hide');
                   $('.modal-backdrop').hide();
-                  alert("Sign up successfully.");
+                  alert("Sign up successful.");
                 }
               }
         });

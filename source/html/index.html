@@ -146,13 +146,13 @@
       #contcar{
         position: absolute;
         display: block;
-        left: calc(50% - 450px);
+        left: calc(50% - 400px);
         top: 22%;
         z-index: 2;
         margin-left: auto !important;
         margin-right: auto;
         align-items:center !important;
-        width: 900px;
+        width: 800px;
       }
 
 
@@ -163,7 +163,7 @@
         right: -10%;
       }
       #contcont{
-        margin-top: 15%;
+        margin-top: 6%;
       }
       #article{
         line-height: 1.5rem;
@@ -571,7 +571,7 @@ html, body {
           document.frm.next2.value = valew.LastEvaluatedKey["id"];
           document.frm.prev2.value = valew.Items[0]["id"];
           data.Items.forEach(function(articleItem){
-            $('#tbodyid').append('<div class="col-lg-4 col-md-6 mb-4">' + '<div class="card h-100">' + '<a href="#" onClick="showIt('+ articleItem.id +')">' + '<img class="card-img-top img-fluid" src="'+articleItem.img+'" alt="">'+ '</a>' + '<div class="card-block">' + '<h4 class="card-title">' + '<a href="prod.html?idp_='+articleItem.id+'" class="hrefch">' + articleItem.title + '</a>' + '</h4>' + '<h5>$' + articleItem.price + '</h5>' + '<p id="article" class="card-text">' + articleItem.desc + ' </p>' + ' </div>' + '</div>' +'</div>');
+            $('#tbodyid').append('<div class="col-lg-4 col-md-6 mb-4">' + '<div class="card h-100">' + '<a href="prod.html?idp_='+articleItem.id+'">' + '<img class="card-img-top img-fluid" src="'+articleItem.img+'" alt="">'+ '</a>' + '<div class="card-block">' + '<h4 class="card-title">' + '<a href="prod.html?idp_='+articleItem.id+'" class="hrefch">' + articleItem.title + '</a>' + '</h4>' + '<h5>$' + articleItem.price + '</h5>' + '<p id="article" class="card-text">' + articleItem.desc + ' </p>' + ' </div>' + '</div>' +'</div>');
           })
         }
       });
@@ -658,6 +658,7 @@ html, body {
       document.getElementById("message-text").value = "";
       alert('Thanks for the message!!');
       $('#exampleModal').modal('hide');
+      location.reload();
     }
 
     function byCat(cat){
@@ -671,7 +672,7 @@ html, body {
           // var valew = JSON.parse(JSON.stringify(data));
           // document.frm.next2.value = valew.LastEvaluatedKey["id"];
           data.Items.forEach(function(articleItem){
-                $('#tbodyid').append('<div class="col-lg-4 col-md-6 mb-4">' + '<div class="card h-100">' + '<a href="#" onClick="showIt('+ articleItem.id +')">' + '<img class="card-img-top img-fluid" src="'+articleItem.img+'" alt="">'+ '</a>' + '<div class="card-block">' + '<h4 class="card-title">' + '<a href="prod.html?idp_='+articleItem.id+'" class="hrefch">' + articleItem.title + '</a>' + '</h4>' + '<h5>$' + articleItem.price + '</h5>' + '<p id="article" class="card-text">' + articleItem.desc + ' </p>' + ' </div>' + '</div>' +'</div>');
+                $('#tbodyid').append('<div class="col-lg-4 col-md-6 mb-4">' + '<div class="card h-100">' + '<a href="prod.html?idp_='+articleItem.id+'">' + '<img class="card-img-top img-fluid" src="'+articleItem.img+'" alt="">'+ '</a>' + '<div class="card-block">' + '<h4 class="card-title">' + '<a href="prod.html?idp_='+articleItem.id+'" class="hrefch">' + articleItem.title + '</a>' + '</h4>' + '<h5>$' + articleItem.price + '</h5>' + '<p id="article" class="card-text">' + articleItem.desc + ' </p>' + ' </div>' + '</div>' +'</div>');
           })
         }
       });
@@ -745,7 +746,7 @@ html, body {
                 }else{                  
                   $('#signInModal').modal('hide');
                   $('.modal-backdrop').hide();
-                  alert("Sign up successfully.");
+                  alert("Sign up successful.");
                 }
               }
         });

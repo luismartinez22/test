@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="favicon.ico">
+
+    <title>HLS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="shop-homepage.css" rel="stylesheet">
+
+    <!-- Temporary navbar container fix -->
+    <style>
+    .navbar-toggler {
+        z-index: 1;
+    }
+    
+    @media (max-width: 576px) {
+        nav > .container {
+            width: 20%;
+        }
+    }
+    /* Temporary fix for img-fluid sizing within the carousel */
+    
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: block;
+    }
+
+          body {
+        padding-top: 50px;
+        color: #868688;
+        background-color: #FAFCFF;
+      }
+      nav {
+        background-color: #e7e7e7
+      }
+      nav a {
+        color: #868688;
+      }
+      nav a:hover {
+        color: #606062;
+        text-decoration: none;
+      }
+      .navbar-toggle .icon-bar {
+        background-color: #868688;
+      }
+      .starter-template {
+        padding: 40px 15px;
+        text-align: center;
+      }
+      .video-js {
+        margin: 0 auto;
+      }
+      input {
+        margin-top: 15px;
+        min-width: 450px;
+        padding: 5px;
+      }
+    </style>
+
+
+
+
+    
+
+    <!-- Bootstrap core CSS. This is just to make the demo look
+    nice. It's not required for videojs-contrib-hls to work. -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Some custom styles for the demo page -->
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container">
+            <a class="navbar-brand" href="#">Start Bootstrap</a>
+            <div class="collapse navbar-collapse" id="navbarExample">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                <h1 class="my-4">Shop Name</h1>
+                <div class="list-group">
+                    <a href="hls.html" class="list-group-item">HLS</a>
+                    <a href="http://demo.ecommerce2.s3-website-us-west-2.amazonaws.com" class="list-group-item">Home</a>
+                    <a href="#" class="list-group-item">Category 3</a>
+                </div>
+
+            </div>
+            <!-- /.col-lg-3 -->
+            <div class="col-lg-9">
+                  <!-- <div class="container"> -->
+
+      <section class="starter-template">
+        <h1>HLS</h1>
+
+        <!--
+          -- Your video element. Just like regular HTML5 video.
+          -->
+        <video id=example-video width=960 height=400 class="video-js vjs-default-skin" controls>
+          <source
+             src="//d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
+             type="application/x-mpegURL">
+        </video>
+
+        <form id=load-url>
+          <label>
+            Video URL:
+            <input id=url type=url value="https://s3.amazonaws.com/hls.demo.output/BM_training/index.m3u8">
+          </label>
+          <button type=submit>Load</button>
+        </form>
+
+      </section>
+
+    </div><!-- /.container -->
+        </div>
+        <!-- </div> -->
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+      
+
+
+
+    <!-- Bootstrap stuff. These three scripts aren't necessary for you
+         to use videojs-contrib-hls -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+
+    <!--------------------------------------------------------------------------
+      --                      videojs-contrib-hls setup                       --
+      ------------------------------------------------------------------------!>
+
+    <!--
+      -- Make sure to include the video.js CSS. This could go in
+      -- the <head>, too.
+      -->
+    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+
+    <!--
+      -- Include video.js and videojs-contrib-hls in your page
+      -->
+
+    <script src="https://unpkg.com/video.js/dist/video.js"></script>
+    <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+
+    <!--
+      -- Now, initialize your player. That's it!
+      -->
+    <script>
+    $(document).ready(function(window, videojs){
+        var player = window.player = videojs('example-video');
+        var url = "https://s3.amazonaws.com/hls.demo.output/BM_training/index.m3u8";
+          player.src({
+            src: url,
+            type: 'application/x-mpegURL'
+          });
+          return false;
+    }(window, window.videojs));
+    </script>
+
+    //     <script>
+    //   (function(window, videojs) {
+    //     var player = window.player = videojs('example-video');
+
+    //     // hook up the video switcher
+    //     var loadUrl = document.getElementById('load-url');
+    //     var url = document.getElementById('url');
+    //     loadUrl.addEventListener('submit', function(event) {
+    //       event.preventDefault();
+    //       player.src({
+    //         src: url.value,
+    //         type: 'application/x-mpegURL'
+    //       });
+    //       return false;
+    //     });
+    //   }(window, window.videojs));
+    // </script>
+
+
+    <!-- Footer -->
+    <footer class="py-5 bg-inverse">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/tether/tether.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
