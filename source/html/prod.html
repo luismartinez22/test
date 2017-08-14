@@ -713,7 +713,7 @@ a:focus{
       if(token.length > 0){
         $.ajax({
             type:'POST',
-            url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/check',
+            url: 'https://api-demo-ecommerce.abstracta.us/check',
             data: JSON.stringify({"token": token}),
             contentType: "application/json",
             success: function(data){
@@ -738,7 +738,7 @@ a:focus{
     }
   });
 
-    var API_URL = 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/entries';
+    var API_URL = 'https://api-demo-ecommerce.abstracta.us/entries';
 
     $('#agregar').on('click', function(){
       $.ajax({
@@ -771,7 +771,7 @@ a:focus{
         
     $(document).ready(function(window, videojs){
         var player = window.player = videojs('example-video');
-        var url = "https://s3.amazonaws.com/hls.demo.output/BM_training/index.m3u8";
+        var url = "https://s3.amazonaws.com/hls.demo.output/about_demo/index.m3u8";
           player.src({
             src: url,
             type: 'application/x-mpegURL'
@@ -787,7 +787,7 @@ a:focus{
         }else{        
           $.ajax({
                 type:'POST',
-                url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/login',
+                url: 'https://api-demo-ecommerce.abstracta.us/login',
                 data: JSON.stringify({"username": username,"password": pass}),
                 contentType: "application/json",
 
@@ -799,7 +799,7 @@ a:focus{
                   }else{
                   $('#logInModal').modal('hide');
                   $('.modal-backdrop').hide();
-                    token = data;
+                    token = data.replace("Auth_token: ","");
                     document.cookie = "tokenp_=" + token;
                     location.reload();
                   }
@@ -827,7 +827,7 @@ a:focus{
         }else{  
         $.ajax({
               type:'POST',
-              url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/signup',
+              url: 'https://api-demo-ecommerce.abstracta.us/signup',
               data: JSON.stringify({"username": username,"password": pass}),
               contentType: "application/json",
 
@@ -859,7 +859,7 @@ a:focus{
            idp = idp.replace(/#/g, '');
           $.ajax({
             type:'POST',
-            url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/view',
+            url: 'https://api-demo-ecommerce.abstracta.us/view',
             data: JSON.stringify({"id": idp}),
             contentType: "application/json",
 
@@ -879,7 +879,7 @@ a:focus{
                   .toString(16)
                   .substring(1);
               }
-              return s4() + s4() + '-' + s4();
+              return s4() + s4() + '' + s4();
             }
 
 
@@ -888,7 +888,7 @@ a:focus{
               if(token.length > 0){
                     $.ajax({
                         type:'POST',
-                        url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/addtocart',
+                        url: 'https://api-demo-ecommerce.abstracta.us/addtocart',
                         data: JSON.stringify({"id": guid(),"cookie": token,"prod_id": idp, "flag" : true}),
                         contentType: "application/json",
 
@@ -907,7 +907,7 @@ a:focus{
                 }else{
                     $.ajax({
                         type:'POST',
-                        url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/addtocart',
+                        url: 'https://api-demo-ecommerce.abstracta.us/addtocart',
                         data: JSON.stringify({"id": guid(),"cookie": document.cookie,"prod_id": idp, "flag" : false}),
                         contentType: "application/json",
                         success: function(data){

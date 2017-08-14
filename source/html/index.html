@@ -530,7 +530,7 @@ html, body {
         if(token.length > 0){
           $.ajax({
               type:'POST',
-              url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/check',
+              url: 'https://api-demo-ecommerce.abstracta.us/check',
               data: JSON.stringify({"token": token}),
               contentType: "application/json",
               success: function(data){
@@ -555,7 +555,7 @@ html, body {
       }
     }); 
 
-    var API_URL = 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/entries';
+    var API_URL = 'https://api-demo-ecommerce.abstracta.us/entries';
     $(document).ready(function(){
       var userc = getCookie("user");
       if(userc.length <= 0){
@@ -596,7 +596,7 @@ html, body {
     $('#next2').on('click', function(){
       $.ajax({
         type:'POST',
-        url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/pagination',
+        url: 'https://api-demo-ecommerce.abstracta.us/pagination',
         data: JSON.stringify({"id": $('#next2').val()}),
         contentType: "application/json",
 
@@ -620,7 +620,7 @@ html, body {
   $('#prev2').on('click', function(){
       $.ajax({
         type:'POST',
-        url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/pagination',
+        url: 'https://api-demo-ecommerce.abstracta.us/pagination',
         data: JSON.stringify({"id": $('#prev2').val()}),
         contentType: "application/json",
 
@@ -664,7 +664,7 @@ html, body {
     function byCat(cat){
       $.ajax({
         type:'POST',
-        url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/bycat',
+        url: 'https://api-demo-ecommerce.abstracta.us/bycat',
         data: JSON.stringify({"cat": cat}),
         contentType: "application/json",
         success: function(data){
@@ -680,7 +680,7 @@ html, body {
         
     $(document).ready(function(window, videojs){
         var player = window.player = videojs('example-video');
-        var url = "https://s3.amazonaws.com/hls.demo.output/BM_training/index.m3u8";
+        var url = "https://s3.amazonaws.com/hls.demo.output/about_demo/index.m3u8";
           player.src({
             src: url,
             type: 'application/x-mpegURL'
@@ -696,7 +696,7 @@ html, body {
         }else{        
           $.ajax({
                 type:'POST',
-                url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/login',
+                url: 'https://api-demo-ecommerce.abstracta.us/login',
                 data: JSON.stringify({"username": username,"password": pass}),
                 contentType: "application/json",
 
@@ -708,7 +708,7 @@ html, body {
                   }else{
                   $('#logInModal').modal('hide');
                   $('.modal-backdrop').hide();
-                    token = data;
+                    token = data.replace("Auth_token: ","");
                     document.cookie = "tokenp_=" + token;
                     location.reload();
                   }
@@ -736,7 +736,7 @@ html, body {
         }else{  
         $.ajax({
               type:'POST',
-              url: 'https://eytd7kn5ik.execute-api.us-west-2.amazonaws.com/prod/signup',
+              url: 'https://api-demo-ecommerce.abstracta.us/signup',
               data: JSON.stringify({"username": username,"password": pass}),
               contentType: "application/json",
 
